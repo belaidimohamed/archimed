@@ -1,0 +1,13 @@
+django
+djangorestframework
+drf-yasg
+
+
+coreapi
+coreschema
+
+
+psycopg2-binary
+django-allauth
+django-cors-headers
+python-decouple
