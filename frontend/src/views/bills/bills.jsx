@@ -27,14 +27,12 @@ export default function Bills() {
     })
   }
   const onCreateBill = async (data) => {
-    console.log(data);
     setBillDialog(false);
     createBill(data)
       .then(() => {
         fetchBills();
       })
       .catch((error) => {
-        console.log(error.message);
         toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
       });
   };
@@ -53,7 +51,6 @@ export default function Bills() {
   };
 
   const handleEdit = (data) => {
-    console.log(data);
     setBillDialog(true);
     setDefaultBill({ ...data });
   };
@@ -84,7 +81,6 @@ export default function Bills() {
   const onGenerateBills = () => {
     setIsGenerating(true)
     generateBills().then((data) => {
-      console.log(data)
       fetchBills();
       setIsGenerating(false)
     }).catch((err) => {
@@ -92,10 +88,8 @@ export default function Bills() {
     });
   }
   useEffect(() => {
-    return () => {
       fetchBills();
       fetchInvestors()
-    };
   }, [])
   return (
     <div>

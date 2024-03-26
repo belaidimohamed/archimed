@@ -17,12 +17,10 @@ export default function Investors() {
   const toast = useRef(null);
 
   const onCreateInvestor = async (data) => {
-    console.log(data)
     setInvestorDialog(false)
     createInvestor(data).then(() => {
       fetchInvestors()
     }).catch((error) => {
-      console.log(error.message)
       toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
     })
   }
@@ -36,12 +34,10 @@ export default function Investors() {
     })
   }
   useEffect(() => {
-    console.log('hi')
     fetchInvestors()
   }, [])
   
   const handleEdit = (data) => {
-    console.log(data)
     setInvestorDialog(true);
     setDefaultInvestor({...data})
   }

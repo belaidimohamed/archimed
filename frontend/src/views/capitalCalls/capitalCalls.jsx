@@ -19,14 +19,12 @@ export default function CapitalCalls() {
   const toast = useRef(null);
 
   const onCreateCapitalCall = async (data) => {
-    console.log(data);
     setCapitalCallDialog(false);
     createCapitalCall(data)
       .then(() => {
         fetchCapitalCalls();
       })
       .catch((error) => {
-        console.log(error.message);
         toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
       });
   };
@@ -44,7 +42,6 @@ export default function CapitalCalls() {
   };
 
   const handleEdit = (data) => {
-    console.log(data);
     setCapitalCallDialog(true);
     setDefaultCapitalCall({ ...data });
   };
