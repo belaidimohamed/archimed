@@ -42,4 +42,20 @@ export async function updateBill(id, data) {
 };
 
 
-// ------------------------- Investors ---------------------------------
+// ------------------------- capital calls ---------------------------------
+
+export async function createCapitalCall(payload) {
+  return await axios.post(apiURI + "capitalCall/", payload, getHeader());
+};
+
+export async function getCapitalCalls() {
+  return await axios.get(apiURI + "capitalCall/", { headers: getHeader() });
+};
+
+export async function deleteCapitalCall(id) {
+  return await axios.delete(apiURI + "capitalCall/" + id, { headers: getHeader() });
+};
+
+export async function updateCapitalCall(id, data) {
+  return await axios.patch(`${apiURI}capitalCall/${id}/`, data, { headers: getHeader() });
+};

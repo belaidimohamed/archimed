@@ -1,21 +1,104 @@
-import { Button } from 'primereact/button'
-import React, { useState } from 'react'
-import { Container } from '../../components/containers/container'
-import Navbar from '../../components/navigation/navbar'
-import AddCapitalCallDialog from './components/addCapitalCalls'
+import { Button } from 'primereact/button';
+import React, { useEffect, useRef, useState } from 'react';
+import Navbar from '../../components/navigation/navbar';
+import AddCapitalCallDialog from './components/addCapitalCall';
+import { createCapitalCall, deleteCapitalCall, getCapitalCalls, updateCapitalCall } from '../../services/api';
+import { Toast } from 'primereact/toast';
+import CapitalCallsTable from './components/capitalCallsTable';
+import Flex from '../../components/containers/flex';
+import { Container } from '../../components/containers/container';
 
 export default function CapitalCalls() {
+  const [defaultCapitalCall, setDefaultCapitalCall] = useState();
+  const [capitalCalls, setCapitalCalls] = useState([]);
+  const [capitalCallDialog, setCapitalCallDialog] = useState(false);
   const [investors, setInvestors] = useState([])
-  const [investorDialog, setInvestorDialog] = useState(false)
+
+  const toast = useRef(null);
+
+  const onCreateCapitalCall = async (data) => {
+    console.log(data);
+    setCapitalCallDialog(false);
+    createCapitalCall(data)
+      .then(() => {
+        fetchCapitalCalls();
+      })
+      .catch((error) => {
+        console.log(error.message);
+        toast.current.show({ severity: 'error', summary: 'Error', detail: error.message });
+      });
+  };
+
+  const fetchCapitalCalls = () => {
+    getCapitalCalls()
+      .then((resp) => {
+        setCapitalCalls(resp.data);
+        console.log(resp)
+      })
+      .catch(() => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the capital calls' });
+      });
+  };
+
+  const handleEdit = (data) => {
+    console.log(data);
+    setCapitalCallDialog(true);
+    setDefaultCapitalCall({ ...data });
+  };
+
+  const handleDelete = (data) => {
+    deleteCapitalCall(data.id)
+      .then(() => {
+        fetchCapitalCalls();
+        toast.current.show({ severity: 'info', summary: 'Info', detail: 'Capital call deleted successfully' });
+      })
+      .catch((error) => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while deleting the capital call' });
+      });
+  };
+
+  const onUpdateCapitalCall = (data) => {
+    setCapitalCallDialog(false);
+    updateCapitalCall(data.id, data)
+      .then(() => {
+        fetchCapitalCalls();
+        toast.current.show({ severity: 'success', summary: 'Updated', detail: 'Capital call updated successfully' });
+      })
+      .catch(() => {
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while updating the capital call' });
+      });
+    setDefaultCapitalCall({});
+  };
+  const fetchInvestors = () => {
+    getInvestors().then((resp) => {
+      setInvestors(resp.data)
+    }).catch(() => {
+      toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the investors' });
+    })
+  }
+
+  useEffect(() => {
+    fetchCapitalCalls();
+    fetchInvestors
+  }, []);
 
   return (
     <div>
       <Navbar />
       <Container>
-        <Button label="Add an investor" severity='success' onClick={()=>setInvestorDialog(true)} />
-        
-        <AddCapitalCallDialog onHide={()=>{setInvestorDialog(false)}} visible={investorDialog} />
+        <Flex justifyContent='flex-end'>
+          <Button className='mb-5' label="Add a capital call" severity='success' onClick={() => setCapitalCallDialog(true)} />
+        </Flex>
+        <CapitalCallsTable handleEdit={handleEdit} handleDelete={handleDelete} data={capitalCalls} />
+        <AddCapitalCallDialog
+          investors= {investors}
+          defaultData={defaultCapitalCall}
+          onSave={(data) => { defaultCapitalCall ? onUpdateCapitalCall(data) : onCreateCapitalCall(data); }}
+          onHide={() => { setCapitalCallDialog(false); }}
+          visible={capitalCallDialog}
+        />
       </Container>
+      <Toast ref={toast} />
     </div>
-  )
+  );
 }

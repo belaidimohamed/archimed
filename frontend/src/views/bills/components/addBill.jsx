@@ -10,12 +10,11 @@ import Dropdown from '../../../components/form/dropdown';
 function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors }) {
     const navigate = useNavigate();
 
-    const [bill, setBill] = useState(defaultData || { investor: null, amount: '', bill_type: '', due_date: '' });
-    const [billError, setBillError] = useState({ investor: false, amount: false, bill_type: false, due_date: false });
+    const [bill, setBill] = useState(defaultData || { investor: null,  bill_type: '', due_date: '' });
+    const [billError, setBillError] = useState({ investor: false, bill_type: false, due_date: false });
 
     let schema = yup.object().shape({
         investor: yup.string().required('Please select an investor'),
-        amount: yup.number().required('Please enter the amount'),
         bill_type: yup.string().required('Please enter the bill type'),
         due_date: yup.date().required('Please enter the due date'),
     });
@@ -46,8 +45,8 @@ function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors })
     };
 
     const handleCancel = () => {
-        setBill({ investor: null, amount: '', bill_type: '', due_date: '' });
-        setBillError({ investor: false, amount: false, bill_type: false, due_date: false });
+        setBill({ investor: null, bill_type: '', due_date: '' });
+        setBillError({ investor: false, bill_type: false, due_date: false });
         onHide();
     };
 
@@ -85,7 +84,6 @@ function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors })
     return (
         <Dialog visible={visible} style={{ width: '32rem' }} header="Add Bill" modal className="p-fluid" footer={billDialogFooter} onHide={onHide}>
             <Dropdown error={billError.investor} options={mapInvestors(investors)} onChange={(value) => handleInput('investor', value)} value={bill.investor} placeholder='Investor' />
-            <Input error={billError.amount} onChange={(value) => handleInput('amount', value)} value={bill.amount} placeholder='Amount' type='number' />
             <Dropdown error={billError.bill_type} options={billTypeOptions} onChange={(value) => handleInput('bill_type', value)} value={bill.bill_type} placeholder='Bill Type' />
             <Input error={billError.due_date} onChange={(value) => handleInput('due_date', value)} value={bill.due_date} placeholder='Due Date' type='date' />
             <br />

@@ -40,6 +40,8 @@ export default function Bills() {
     getBills()
       .then((resp) => {
         setBills(resp.data);
+            console.log(resp)
+
       })
       .catch(() => {
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the bills' });
