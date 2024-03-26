@@ -87,17 +87,16 @@ export default function CapitalCallsTable({ data, handleEdit, handleDelete }) {
                 loading={loading}
                 dataKey="id"
                 filters={filters}
-                globalFilterFields={['investor__name', 'total_amount', 'due_date', 'from_company', 'to_person', 'email', 'status']}
+                globalFilterFields={['investor__name', 'total_amount','iban', 'due_date', 'from_company', 'status']}
                 header={header}
                 emptyMessage="No data found."
             >
-                <Column field="investor__name" header="Investor Name" filter filterPlaceholder="Search by investor name" style={{ minWidth: '12rem' }} />
-                <Column field="total_amount" header="Total Amount" filter filterPlaceholder="Search by total amount" style={{ minWidth: '12rem' }} />
-                <Column field="due_date" header="Due Date" filter filterPlaceholder="Search by due date" style={{ minWidth: '12rem' }} />
-                <Column field="from_company" header="From Company" filter filterPlaceholder="Search by from company" style={{ minWidth: '12rem' }} />
-                <Column field="to_person" header="To Person" filter filterPlaceholder="Search by to person" style={{ minWidth: '12rem' }} />
-                <Column field="email" header="Email" filter filterPlaceholder="Search by email" style={{ minWidth: '12rem' }} />
-                <Column field="status" header="Status" filter filterPlaceholder="Search by status" style={{ minWidth: '12rem' }} />
+                <Column field="investor__name" header="To Person"  style={{ minWidth: '12rem' }} />
+                <Column field="total_amount" header="Total Amount"  style={{ minWidth: '12rem' }} />
+                <Column field="due_date" header="Due Date"  style={{ minWidth: '12rem' }} />
+                <Column field="from_company" header="From Company"  style={{ minWidth: '12rem' }} />
+                <Column field="iban" header="IBAN" style={{ minWidth: '12rem' }} />
+                <Column field="status" header="Status"  style={{ minWidth: '12rem' }} />
                 <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
             </DataTable>
         </div>

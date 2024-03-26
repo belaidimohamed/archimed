@@ -41,6 +41,10 @@ export async function updateBill(id, data) {
   return await axios.patch(`${apiURI}bill/${id}/`, data, { headers: getHeader() });
 };
 
+export async function generateBills() {
+  return await axios.get(`${apiURI}bill/generate_bills_automatically/`, { headers: getHeader() });
+};
+
 
 // ------------------------- capital calls ---------------------------------
 

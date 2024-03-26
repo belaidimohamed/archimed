@@ -2,7 +2,7 @@ import { Button } from 'primereact/button';
 import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/navigation/navbar';
 import AddCapitalCallDialog from './components/addCapitalCall';
-import { createCapitalCall, deleteCapitalCall, getCapitalCalls, updateCapitalCall } from '../../services/api';
+import { createCapitalCall, deleteCapitalCall, getCapitalCalls, getInvestors, updateCapitalCall } from '../../services/api';
 import { Toast } from 'primereact/toast';
 import CapitalCallsTable from './components/capitalCallsTable';
 import Flex from '../../components/containers/flex';
@@ -13,6 +13,7 @@ export default function CapitalCalls() {
   const [capitalCalls, setCapitalCalls] = useState([]);
   const [capitalCallDialog, setCapitalCallDialog] = useState(false);
   const [investors, setInvestors] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const toast = useRef(null);
 
@@ -33,10 +34,11 @@ export default function CapitalCalls() {
     getCapitalCalls()
       .then((resp) => {
         setCapitalCalls(resp.data);
-        console.log(resp)
+        setIsLoading(false)
       })
       .catch(() => {
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the capital calls' });
+        setIsLoading(false)
       });
   };
 
@@ -79,25 +81,27 @@ export default function CapitalCalls() {
 
   useEffect(() => {
     fetchCapitalCalls();
-    fetchInvestors
+    fetchInvestors();
   }, []);
 
   return (
     <div>
       <Navbar />
-      <Container>
-        <Flex justifyContent='flex-end'>
-          <Button className='mb-5' label="Add a capital call" severity='success' onClick={() => setCapitalCallDialog(true)} />
-        </Flex>
-        <CapitalCallsTable handleEdit={handleEdit} handleDelete={handleDelete} data={capitalCalls} />
-        <AddCapitalCallDialog
-          investors= {investors}
-          defaultData={defaultCapitalCall}
-          onSave={(data) => { defaultCapitalCall ? onUpdateCapitalCall(data) : onCreateCapitalCall(data); }}
-          onHide={() => { setCapitalCallDialog(false); }}
-          visible={capitalCallDialog}
-        />
-      </Container>
+      {isLoading ? <Spinner /> :
+        <Container>
+          <Flex justifyContent='flex-end'>
+            <Button className='mb-5' label="Add a capital call" severity='success' onClick={() => setCapitalCallDialog(true)} />
+          </Flex>
+          <CapitalCallsTable handleEdit={handleEdit} handleDelete={handleDelete} data={capitalCalls} />
+          <AddCapitalCallDialog
+            investors={investors}
+            defaultData={defaultCapitalCall}
+            onSave={(data) => { defaultCapitalCall ? onUpdateCapitalCall(data) : onCreateCapitalCall(data); }}
+            onHide={() => { setCapitalCallDialog(false); }}
+            visible={capitalCallDialog}
+          />
+        </Container>
+      }
       <Toast ref={toast} />
     </div>
   );

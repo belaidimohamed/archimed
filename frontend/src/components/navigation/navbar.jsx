@@ -12,7 +12,9 @@ export default function Navbar() {
 
     const place = location.pathname+location.hash
     const itemRenderer = (item, options) => {
-        const isActive = (place === item.value)
+        let isActive = (place === item.value)
+        if (! ['/bills', '/capitalCalls'].includes(place) && item.value =='/investors') isActive = true 
+            
         
         return (
             <a className={`flex align-items-center p-menuitem-link ${isActive ? 'bg-gray-200 rounded' : ''}`}>

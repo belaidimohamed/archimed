@@ -2,17 +2,20 @@ import { Button } from 'primereact/button';
 import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../../components/navigation/navbar';
 import AddBillDialog from './components/addBill';
-import { createBill, deleteBill, getBills, getInvestors, updateBill } from '../../services/api';
+import { createBill, deleteBill, generateBills, getBills, getInvestors, updateBill } from '../../services/api';
 import { Toast } from 'primereact/toast';
 import BillsTable from './components/billsTable';
 import Flex from '../../components/containers/flex';
 import { Container } from '../../components/containers/container';
+import Spinner from '../../components/containers/spinner';
 
 export default function Bills() {
   const [defaultBill, setDefaultBill] = useState();
   const [bills, setBills] = useState([]);
   const [billDialog, setBillDialog] = useState(false);
   const [investors, setInvestors] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const toast = useRef(null);
 
@@ -40,11 +43,12 @@ export default function Bills() {
     getBills()
       .then((resp) => {
         setBills(resp.data);
-            console.log(resp)
+        setIsLoading(false)
 
       })
       .catch(() => {
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the bills' });
+        setIsLoading(false)
       });
   };
 
@@ -77,29 +81,42 @@ export default function Bills() {
       });
     setDefaultBill({});
   };
-
+  const onGenerateBills = () => {
+    setIsGenerating(true)
+    generateBills().then((data) => {
+      console.log(data)
+      fetchBills();
+      setIsGenerating(false)
+    }).catch((err) => {
+      toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while generating bills' });
+    });
+  }
   useEffect(() => {
     return () => {
-      fetchInvestors()
       fetchBills();
+      fetchInvestors()
     };
   }, [])
   return (
     <div>
       <Navbar />
-      <Container>
-        <Flex justifyContent='flex-end'>
-          <Button className='mb-5' label="Add a bill" severity='success' onClick={() => setBillDialog(true)} />
-        </Flex>
-        <BillsTable handleEdit={handleEdit} handleDelete={handleDelete} data={bills} />
-        <AddBillDialog
-          investors={investors}
-          defaultData={defaultBill}
-          onSave={(data) => {defaultBill ? onUpdateBill(data) : onCreateBill(data); }}
-          onHide={() => {setBillDialog(false);}}
-          visible={billDialog}
-        />
-      </Container>
+      {isLoading ? <Spinner /> :
+        <Container>
+          <Flex justifyContent='flex-end'>
+            {/* <Button className='mb-5' disabled={isGenerating} label="Add a bill" severity='success' onClick={() => setBillDialog(true)} /> */}
+            <Button className='mb-5' disabled={isGenerating} label={isGenerating? "Generating..":"Generate bills"} severity='info' onClick={onGenerateBills} />
+
+          </Flex>
+          <BillsTable handleEdit={handleEdit} handleDelete={handleDelete} data={bills} />
+          <AddBillDialog
+            investors={investors}
+            defaultData={defaultBill}
+            onSave={(data) => { defaultBill ? onUpdateBill(data) : onCreateBill(data); }}
+            onHide={() => { setBillDialog(false); }}
+            visible={billDialog}
+          />
+        </Container>
+      }
       <Toast ref={toast} />
     </div>
   );

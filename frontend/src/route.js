@@ -5,7 +5,10 @@ import Investors from './views/investors/investors';
 
 
 export const router = createBrowserRouter([
-  {path:'/investors',element:<Investors />},
+  { path: '/investors', element: <Investors /> },
+    {path:'*',element:<Investors />},
+
   {path:'/capitalCalls',element:<CapitalCalls />},
-  {path:'/bills',element:<Bills />},
+  { path: '/bills', element: <Bills /> },
+  
 ])

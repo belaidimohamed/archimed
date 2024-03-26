@@ -5,17 +5,19 @@ import Input from '../../../components/form/input';
 import Flex from '../../../components/containers/flex';
 import * as yup from "yup";
 import { useNavigate } from 'react-router-dom';
+import Dropdown from '../../../components/form/dropdown';
 
 function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
     const navigate = useNavigate();
 
-    const [investor, setInvestor] = useState(defaultData || { name: '', email: '', amount_invested: '' });
-    const [investorError, setInvestorError] = useState({ name: false, email: false, amount_invested: false });
+    const [investor, setInvestor] = useState(defaultData || { name: '', email: '', amount_invested: '' , billing_type:''});
+    const [investorError, setInvestorError] = useState({ name: false, email: false, amount_invested: false , billing_type:false });
 
     let schema = yup.object().shape({
         name: yup.string().required('Please enter a name'),
         email: yup.string().email('Invalid email').required('Please enter an email'),
         amount_invested: yup.number().required('Please enter the amount invested'),
+        billing_type: yup.string().required('Please select a billing method'),
     });
 
     const handleInput = async (attribute, value) => {
@@ -49,10 +51,6 @@ function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
         onHide();
     };
 
-    const goInvestors = () => {
-        navigate('/investors');
-    };
-
     useEffect(() => {
         if (!defaultData)
             setInvestor({});
@@ -68,12 +66,17 @@ function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
             </Flex>
         </React.Fragment>
     );
+    const billTypeOptions = [
+        { label: 'Upfront fees', value: 'Upfront fees' },
+        { label: 'Yearly fees', value: 'Yearly fees' }
+    ];
 
     return (
         <Dialog visible={visible} style={{ width: '32rem' }} header="Add Investor" modal className="p-fluid" footer={investorDialogFooter} onHide={onHide}>
             <Input error={investorError.name} onChange={(value) => handleInput('name', value)} value={investor.name} placeholder='Name' />
             <Input error={investorError.email} onChange={(value) => handleInput('email', value)} value={investor.email} placeholder='Email' />
             <Input error={investorError.amount_invested} onChange={(value) => handleInput('amount_invested', value)} value={investor.amount_invested} placeholder='Amount Invested' type='number' />
+            <Dropdown error={investorError.billing_type} options={billTypeOptions} onChange={(value) => handleInput('billing_type', value)} value={investor.billing_type} placeholder='Select a billing method' />
         </Dialog>
     );
 }

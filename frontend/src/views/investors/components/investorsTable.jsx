@@ -88,14 +88,16 @@ export default function InvestorsTable({ data, handleEdit, handleDelete }) {
                 loading={loading}
                 dataKey="id"
                 filters={filters}
-                globalFilterFields={['name', 'email', 'amount_invested']}
+                globalFilterFields={['name', 'email', 'amount_invested','bill_type']}
                 header={header}
                 emptyMessage="No data found."
             >
-                <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                <Column field="email" header="Email" filter filterPlaceholder="Search by email" style={{ minWidth: '12rem' }} />
-                <Column field="amount_invested" header="Amount Invested" filter filterPlaceholder="Search by amount invested" style={{ minWidth: '12rem' }} />
-                <Column field="investment_date" header="Investment Date" filter filterPlaceholder="Search by investment date" style={{ minWidth: '12rem' }} />
+                <Column field="name" header="Name" style={{ minWidth: '12rem' }} />
+                <Column field="email" header="Email"  style={{ minWidth: '12rem' }} />
+                <Column field="amount_invested" header="Amount Invested" style={{ minWidth: '12rem' }} />
+                <Column field="investment_date" header="Investment Date"  style={{ minWidth: '12rem' }} />
+                <Column field="billing_type" header="Billing type"  style={{ minWidth: '12rem' }} />
+
                 <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
             </DataTable>
         </div>

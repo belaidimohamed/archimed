@@ -7,9 +7,11 @@ import { Toast } from 'primereact/toast';
 import InvestorsTable from './components/investorsTable'
 import Flex from '../../components/containers/flex'
 import { Container } from '../../components/containers/container'
+import Spinner from '../../components/containers/spinner'
 
 export default function Investors() {
   const [defaultInvestor, setDefaultInvestor] = useState()
+  const [isLoading, setIsLoading] = useState(true)
   const [investors, setInvestors] = useState([])
   const [investorDialog, setInvestorDialog] = useState(false)
   const toast = useRef(null);
@@ -27,8 +29,10 @@ export default function Investors() {
   const fetchInvestors = () => {
     getInvestors().then((resp) => {
       setInvestors(resp.data)
+      setIsLoading(false)
     }).catch(() => {
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while retrieving the investors' });
+      setIsLoading(false)
     })
   }
   useEffect(() => {
@@ -62,17 +66,19 @@ export default function Investors() {
   return (
     <div>
       <Navbar />
-      <Container>
-        <Flex justifyContent='flex-end'>
-          <Button className='mb-5' label="Add an investor" severity='success' onClick={()=>setInvestorDialog(true)} />
-        </Flex>
-        <InvestorsTable handleEdit={handleEdit} handleDelete={handleDelete} data={investors} />
-        <AddInvestorDialog
-          defaultData={defaultInvestor}
-          onSave={(data)=>{defaultInvestor? onUpdateInvestor(data): onCreateInvestor(data)} }
-          onHide={() => { setInvestorDialog(false) }}
-          visible={investorDialog} />
-      </Container>
+      {isLoading ? <Spinner />:
+          <Container>
+            <Flex justifyContent='flex-end'>
+              <Button className='mb-5' label="Add an investor" severity='success' onClick={()=>setInvestorDialog(true)} />
+            </Flex>
+            <InvestorsTable handleEdit={handleEdit} handleDelete={handleDelete} data={investors} />
+            <AddInvestorDialog
+              defaultData={defaultInvestor}
+              onSave={(data)=>{defaultInvestor? onUpdateInvestor(data): onCreateInvestor(data)} }
+              onHide={() => { setInvestorDialog(false) }}
+              visible={investorDialog} />
+          </Container>
+      }
       <Toast ref={toast} />
     </div>
   )

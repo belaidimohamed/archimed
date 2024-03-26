@@ -10,17 +10,14 @@ import { useNavigate } from 'react-router-dom';
 function AddCapitalCallDialog({ visible, onHide, onSave, defaultData = {}, investors }) {
     const navigate = useNavigate();
 
-    const [capitalCall, setCapitalCall] = useState(defaultData || { investor: '', total_amount: '', due_date: '', from_company: '', to_person: '', email: '', status: 'VALIDATED' });
-    const [capitalCallError, setCapitalCallError] = useState({ investor: false, total_amount: false, due_date: false, from_company: false, to_person: false, email: false });
+    const [capitalCall, setCapitalCall] = useState(defaultData || { investor: '', total_amount: '', due_date: '', from_company: ''});
+    const [capitalCallError, setCapitalCallError] = useState({ investor: false, total_amount: false, due_date: false, from_company: false});
 
     let schema = yup.object().shape({
         investor: yup.string().required('Please select an investor'),
         total_amount: yup.number().required('Please enter the total amount').positive('Total amount must be positive'),
         due_date: yup.date().required('Please enter the due date'),
         from_company: yup.string().required('Please enter the company name'),
-        to_person: yup.string().required('Please enter the person name'),
-        email: yup.string().email('Invalid email').required('Please enter an email'),
-        status: yup.string().required('Please select a status')
     });
 
     const handleInput = async (attribute, value) => {
@@ -35,6 +32,7 @@ function AddCapitalCallDialog({ visible, onHide, onSave, defaultData = {}, inves
     };
 
     const handleClose = async () => {
+        console.log(capitalCall)
         try {
             await schema.validate(capitalCall, { abortEarly: false });
         } catch (err) {
@@ -73,17 +71,24 @@ function AddCapitalCallDialog({ visible, onHide, onSave, defaultData = {}, inves
             </Flex>
         </React.Fragment>
     );
+      const mapInvestors = (data) => {
+        const array = []
+        data.forEach((item)=> {
+            array.push({label:item.email+' - '+item.amount_invested, value:item.id})
+        })
+        return array
+    }
 
     return (
         <Dialog visible={visible} style={{ width: '32rem' }} header="Add Capital Call" modal className="p-fluid" footer={capitalCallDialogFooter} onHide={onHide}>
-            <Dropdown error={capitalCallError.investor} options={investors} onChange={(value) => handleInput('investor', value)} value={capitalCall.investor} placeholder='Select Investor' />
+            <Dropdown error={capitalCallError.investor} options={mapInvestors(investors)} onChange={(value) => handleInput('investor', value)} value={capitalCall.investor} placeholder='Select Investor' />
             <Input error={capitalCallError.total_amount} onChange={(value) => handleInput('total_amount', value)} value={capitalCall.total_amount} placeholder='Total Amount' type='number' />
             <Input error={capitalCallError.due_date} onChange={(value) => handleInput('due_date', value)} value={capitalCall.due_date} placeholder='Due Date' type='date' />
             <Input error={capitalCallError.from_company} onChange={(value) => handleInput('from_company', value)} value={capitalCall.from_company} placeholder='From Company' />
-            <Input error={capitalCallError.to_person} onChange={(value) => handleInput('to_person', value)} value={capitalCall.to_person} placeholder='To Person' />
-            <Input error={capitalCallError.email} onChange={(value) => handleInput('email', value)} value={capitalCall.email} placeholder='Email' />
+            {/* <Input error={capitalCallError.to_person} onChange={(value) => handleInput('to_person', value)} value={capitalCall.to_person} placeholder='To Person' />
+            <Input error={capitalCallError.email} onChange={(value) => handleInput('email', value)} value={capitalCall.email} placeholder='Email' /> */}
             {/* Assuming you have a dropdown component for status */}
-            <Dropdown error={capitalCallError.status} options={['VALIDATED', 'SENT', 'PAID', 'OVERDUE']} onChange={(value) => handleInput('status', value)} value={capitalCall.status} placeholder='Select Status' />
+            {/* <Dropdown error={capitalCallError.status} options={['VALIDATED', 'SENT', 'PAID', 'OVERDUE']} onChange={(value) => handleInput('status', value)} value={capitalCall.status} placeholder='Select Status' /> */}
             <br />
             <hr />
             <br />
