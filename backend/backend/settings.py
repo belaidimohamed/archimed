@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['0.0.0.0','localhost','127.0.0.1','archimed.onrender.com']
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
