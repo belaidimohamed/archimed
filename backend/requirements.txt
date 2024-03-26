@@ -11,3 +11,4 @@ psycopg2-binary
 django-allauth
 django-cors-headers
 python-decouple
+python-dateutil
