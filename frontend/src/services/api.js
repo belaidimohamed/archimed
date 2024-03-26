@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const apiURI = 'http://localhost:8000/api/';
+// const apiURI = 'http://localhost:8000/api/';
+const apiURI = 'https://archimed.onrender.com/api/'
 const getHeader =  () => {
     return  {
       'Content-type': 'application/json',

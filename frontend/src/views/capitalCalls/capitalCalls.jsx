@@ -7,6 +7,7 @@ import { Toast } from 'primereact/toast';
 import CapitalCallsTable from './components/capitalCallsTable';
 import Flex from '../../components/containers/flex';
 import { Container } from '../../components/containers/container';
+import Spinner from '../../components/containers/spinner';
 
 export default function CapitalCalls() {
   const [defaultCapitalCall, setDefaultCapitalCall] = useState();
