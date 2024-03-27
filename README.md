@@ -1,3 +1,6 @@
+<h2><strong>How to use</strong></h2>
+* Run this command at the root folder: docker-compose up --build <br />
+* Or Directly access the deployed version: https://archimed-596b4.web.app/
 <h2><strong>Technologies Used</strong></h2>
 
 Frontend: React, Styled-components, PrimeReact, and yup for validation
