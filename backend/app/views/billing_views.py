@@ -5,7 +5,6 @@ from ..models import Bill, Investor
 from ..serializers import BillSerializer
 from django.http import JsonResponse
 from rest_framework.decorators import action
-from dateutil.relativedelta import relativedelta
 
 class BillViewSet(viewsets.ModelViewSet):
     """

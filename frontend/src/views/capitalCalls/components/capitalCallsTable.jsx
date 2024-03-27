@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -7,7 +7,7 @@ import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
 import { HiDotsVertical } from "react-icons/hi";
 
-export default function CapitalCallsTable({ data, handleEdit, handleDelete }) {
+export default function CapitalCallsTable({ data, handleEdit, handleDelete, handleStatus }) {
     const [loading, setLoading] = useState(false);
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [filters, setFilters] = useState(null);
@@ -22,7 +22,6 @@ export default function CapitalCallsTable({ data, handleEdit, handleDelete }) {
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-            // Define additional filters as needed
         });
         setGlobalFilterValue('');
     };
@@ -54,6 +53,11 @@ export default function CapitalCallsTable({ data, handleEdit, handleDelete }) {
                 label: 'Update',
                 icon: 'pi pi-file-edit',
                 command: () => { handleEdit(currentElement) }
+            },
+            {
+                label: 'Change Status',
+                icon: 'pi pi-file-edit',
+                command: () => { handleStatus(currentElement) }
             },
             {
                 label: 'Delete',
@@ -92,8 +96,8 @@ export default function CapitalCallsTable({ data, handleEdit, handleDelete }) {
                 emptyMessage="No data found."
             >
                 <Column field="investor__name" header="To Person"  style={{ minWidth: '12rem' }} />
-                <Column field="total_amount" header="Total Amount"  style={{ minWidth: '12rem' }} />
-                <Column field="due_date" header="Due Date"  style={{ minWidth: '12rem' }} />
+                <Column field="total_amount" header="Total Amount" sortable style={{ minWidth: '12rem' }} />
+                <Column field="due_date" header="Due Date" sortable style={{ minWidth: '12rem' }} />
                 <Column field="from_company" header="From Company"  style={{ minWidth: '12rem' }} />
                 <Column field="iban" header="IBAN" style={{ minWidth: '12rem' }} />
                 <Column field="status" header="Status"  style={{ minWidth: '12rem' }} />

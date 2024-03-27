@@ -61,7 +61,7 @@ export default function Bills() {
         fetchBills();
         toast.current.show({ severity: 'info', summary: 'Info', detail: 'Bill deleted successfully' });
       })
-      .catch((error) => {
+      .catch(() => {
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while deleting the bill' });
       });
   };
@@ -69,21 +69,21 @@ export default function Bills() {
   const onUpdateBill = (data) => {
     setBillDialog(false);
     updateBill(data.id, data)
-      .then((resp) => {
+      .then(() => {
         fetchBills();
         toast.current.show({ severity: 'success', summary: 'Updated', detail: 'Bill updated successfully' });
       })
-      .catch((err) => {
+      .catch(() => {
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while updating the bill' });
       });
     setDefaultBill({});
   };
   const onGenerateBills = () => {
     setIsGenerating(true)
-    generateBills().then((data) => {
+    generateBills().then(() => {
       fetchBills();
       setIsGenerating(false)
-    }).catch((err) => {
+    }).catch(() => {
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while generating bills' });
     });
   }

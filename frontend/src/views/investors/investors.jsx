@@ -45,16 +45,16 @@ export default function Investors() {
     deleteInvestor(data.id).then(()=>{
       fetchInvestors();
       toast.current.show({ severity: 'info', summary: 'Info', detail: 'Investor deleted succefully' });
-    }).catch((error) => {
+    }).catch(() => {
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occurred while deleting the investor' });
     })
   }
   const onUpdateInvestor = (data) => {
     setInvestorDialog(false)
-    updateInvestor(data.id , data).then(resp=> {
+    updateInvestor(data.id , data).then(()=> {
       fetchInvestors()
       toast.current.show({ severity: 'success', summary: 'Updated', detail: 'Investor updated succefully' });
-    }).catch((err) => {
+    }).catch(() => {
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'An error occured while updating the investor' });
     })
     setDefaultInvestor({})

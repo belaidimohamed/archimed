@@ -4,11 +4,9 @@ import { Button } from 'primereact/button';
 import Input from '../../../components/form/input';
 import Flex from '../../../components/containers/flex';
 import * as yup from "yup";
-import { useNavigate } from 'react-router-dom';
 import Dropdown from '../../../components/form/dropdown';
 
 function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
-    const navigate = useNavigate();
 
     const [investor, setInvestor] = useState(defaultData || { name: '', email: '', amount_invested: '' , billing_type:''});
     const [investorError, setInvestorError] = useState({ name: false, email: false, amount_invested: false , billing_type:false });
@@ -23,7 +21,7 @@ function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
     const handleInput = async (attribute, value) => {
         setInvestor(investor => ({ ...investor, [attribute]: value }));
         schema.validateAt(attribute, { [attribute]: value })
-            .then(resp => {
+            .then(() => {
                 setInvestorError(investorError => ({ ...investorError, [attribute]: '' }));
             })
             .catch(err => {
@@ -56,6 +54,7 @@ function AddInvestorDialog({ visible, onHide, onSave, defaultData = {} }) {
             setInvestor({});
         else
             setInvestor(defaultData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     const investorDialogFooter = (

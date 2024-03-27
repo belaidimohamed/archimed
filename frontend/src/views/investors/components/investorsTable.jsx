@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -22,7 +22,6 @@ export default function InvestorsTable({ data, handleEdit, handleDelete }) {
     const initFilters = () => {
         setFilters({
             global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-            // Define additional filters as needed
         });
         setGlobalFilterValue('');
     };
@@ -94,8 +93,8 @@ export default function InvestorsTable({ data, handleEdit, handleDelete }) {
             >
                 <Column field="name" header="Name" style={{ minWidth: '12rem' }} />
                 <Column field="email" header="Email"  style={{ minWidth: '12rem' }} />
-                <Column field="amount_invested" header="Amount Invested" style={{ minWidth: '12rem' }} />
-                <Column field="investment_date" header="Investment Date"  style={{ minWidth: '12rem' }} />
+                <Column field="amount_invested" header="Amount Invested" sortable style={{ minWidth: '12rem' }} />
+                <Column field="investment_date" header="Investment Date" sortable style={{ minWidth: '12rem' }} />
                 <Column field="billing_type" header="Billing type"  style={{ minWidth: '12rem' }} />
 
                 <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>

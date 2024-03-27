@@ -9,15 +9,17 @@ services:
       bash -c "
       python manage.py makemigrations &&
       python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000"    volumes:
+      python manage.py runserver 0.0.0.0:8007"    volumes:
       - ./backend:/code  # Mount the backend directory to /code in the container
     ports:
-      - "8000:8000"
+    # 8007 to avoid conflicts
+      - "8007:8007"
     # depends_on:
     #   - db   
     stdin_open: true
     tty: true
 
+  # In case we want to create our own postgresql image
   # db:
   #   image: postgres:latest
   #   environment:
@@ -25,8 +27,8 @@ services:
   #     POSTGRES_USER: myuser
   #     POSTGRES_PASSWORD: mypassword
 
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   ports:
-  #     - "3000:3000"
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"

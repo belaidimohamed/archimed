@@ -1,8 +1,5 @@
 import React from 'react';
-import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
 import { Badge } from 'primereact/badge';
-import { Avatar } from 'primereact/avatar';  
 import { MegaMenu } from 'primereact/megamenu';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -13,10 +10,11 @@ export default function Navbar() {
     const place = location.pathname+location.hash
     const itemRenderer = (item, options) => {
         let isActive = (place === item.value)
-        if (! ['/bills', '/capitalCalls'].includes(place) && item.value =='/investors') isActive = true 
+        if (! ['/bills', '/capitalCalls'].includes(place) && item.value ==='/investors') isActive = true 
             
         
         return (
+            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <a className={`flex align-items-center p-menuitem-link ${isActive ? 'bg-gray-200 rounded' : ''}`}>
                 <span className={item.icon + ' text-lg'} />
                 <span className="mx-2 text-xl">{item.label}</span>
@@ -58,14 +56,6 @@ export default function Navbar() {
     ];
 
     const start = <span style={{ fontStyle: 'italic', fontSize: '28px',paddingRight:'3vw' }}>Archimed</span>;
-
-    const end = (
-        <div className="flex align-items-center gap-2">
-            <InputText placeholder="Search" type="text" className="w-8rem sm:w-auto" />
-            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-        </div>
-    );
-
     return (
         <div className="card p-4">
             <MegaMenu model={items} start={start}  orientation="horizontal" breakpoint="960px" className="p-3 pl-5 surface-0 shadow-2" style={{ borderRadius: '1rem' }} />

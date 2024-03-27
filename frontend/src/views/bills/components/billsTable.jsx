@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FilterMatchMode, FilterOperator } from 'primereact/api';
+import { FilterMatchMode } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -91,11 +91,11 @@ export default function BillsTable({ data, handleEdit, handleDelete }) {
                 header={header}
                 emptyMessage="No data found."
             >
-                <Column field="investor__name" header="Investor Name" filter filterPlaceholder="Search by investor name" style={{ minWidth: '12rem' }} />
-                <Column field="amount" header="Amount" filter filterPlaceholder="Search by amount" style={{ minWidth: '12rem' }} />
-                <Column field="bill_type" header="Bill Type" filter filterPlaceholder="Search by bill type" style={{ minWidth: '12rem' }} />
-                <Column field="date" header="Date" filter filterPlaceholder="Search by date" style={{ minWidth: '12rem' }} />
-                <Column field="due_date" header="Due Date" filter filterPlaceholder="Search by due date" style={{ minWidth: '12rem' }} />
+                <Column field="investor__name" header="Investor Name"  style={{ minWidth: '12rem' }} />
+                <Column field="amount" header="Amount" sortable  style={{ minWidth: '12rem' }} />
+                <Column field="bill_type" header="Bill Type"  style={{ minWidth: '12rem' }} />
+                <Column field="date" header="Date" sortable  style={{ minWidth: '12rem' }} />
+                <Column field="due_date" header="Due Date" sortable  style={{ minWidth: '12rem' }} />
                 <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
             </DataTable>
         </div>

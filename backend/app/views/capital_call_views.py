@@ -1,8 +1,6 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
-from datetime import datetime
-from ..models import CapitalCall, Investor
-from ..serializers import InvestorSerializer,CapitalCallSerializer
+from rest_framework import viewsets
+from ..models import CapitalCall
+from ..serializers import CapitalCallSerializer
 from django.http import JsonResponse
 
 class CapitalCallViewSet(viewsets.ModelViewSet):

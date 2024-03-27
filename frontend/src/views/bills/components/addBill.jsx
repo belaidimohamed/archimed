@@ -22,7 +22,7 @@ function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors })
     const handleInput = async (attribute, value) => {
         setBill(bill => ({ ...bill, [attribute]: value }));
         schema.validateAt(attribute, { [attribute]: value })
-            .then(resp => {
+            .then(() => {
                 setBillError(billError => ({ ...billError, [attribute]: '' }));
             })
             .catch(err => {
@@ -65,6 +65,7 @@ function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors })
             setBill({});
         else
             setBill(defaultData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
     const billDialogFooter = (
@@ -89,6 +90,8 @@ function AddBillDialog({ visible, onHide, onSave, defaultData = {}, investors })
             <br />
             <hr />
             <br />
+            
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <div>Don't have an investor? <a onClick={goInvestors} href=''>Click here to add a new one</a></div>
         </Dialog>
     );
